@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+	<persistence-unit-metadata>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+
+
+	<mapped-superclass class="com.cts.tsp.domain.BaseEntity" />
+	<entity class="com.cts.tsp.domain.AidVersion" />
+	<entity class="com.cts.tsp.domain.DetokenizeResponseField" />
+	<entity class="com.cts.tsp.domain.FundingBinRange">
+		<named-query name="FundingBinRange.findByPrefix">
+			<query>SELECT f FROM FundingBinRange f
+				   WHERE f.fundingBinRange = :fundingPrefix
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.FundingPanTokenMapping" />
+	<entity class="com.cts.tsp.domain.Issuer">
+		<named-query name="Issuer.paginatedlist">
+			<query>SELECT i FROM Issuer i
+			</query>
+		</named-query>
+		<named-query name="Issuer.paginatedlist.count">
+			<query>SELECT count(i) FROM Issuer i
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.IssuerDetokenResponseField" />
+	<entity class="com.cts.tsp.domain.IssuerProdTypeAidVersion">
+		<named-query name="IssuerProdTypeAidVersion.findByAID">
+			<query>SELECT ia FROM IssuerProdTypeAidVersion ia
+			       JOIN FETCH ia.t456IssuerProductType ipt
+			       JOIN FETCH ipt.t455ProductType pt
+			       JOIN FETCH ia.t466AidVersion av
+				   WHERE av.aid = :aid
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.IssuerProductType">
+		<named-query name="IssuerProductType.findByProductType">
+			<query>SELECT ipt FROM IssuerProductType ipt
+			       JOIN FETCH ipt.t457FundingBinRanges fbr
+			       JOIN FETCH ipt.t455ProductType pt
+			       WHERE pt.productType = :productType
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.IssuerResponseMessageCfg" />
+	<entity class="com.cts.tsp.domain.IssuerTokenRequestor" />
+	<entity class="com.cts.tsp.domain.IssuerTokenRequestorAttribute">
+		<named-query name="IssuerTokenRequestorAttribute.findByRequestor">
+			<query>SELECT i FROM IssuerTokenRequestorAttribute i
+			       JOIN FETCH i.t462IssuerTokenRqstrTokenBinRange trbr
+			       JOIN FETCH trbr.issuerTokenRequestor itr
+			       JOIN FETCH i.t463TokenRequestorAttribute
+				   WHERE itr.recordId = :requestorId
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenPool">
+		<named-query name="TokenPool.findByStatus">
+			<query>SELECT t FROM TokenPool t
+			       WHERE t.status = :status
+			       AND t.tokenBin = :tokenBin
+			</query>
+		</named-query>
+	</entity>
+
+	<entity class="com.cts.tsp.domain.IssuerTokenRequestorTokenBinRange">
+		<named-query name="IssuerTokenRequestorTokenBinRange.findByRequestor">
+			<query>SELECT i FROM IssuerTokenRequestorTokenBinRange i
+			       JOIN FETCH i.tokenBinRange t
+			       JOIN FETCH t.fundingBinRange f
+			       JOIN FETCH i.issuerTokenRequestor tr
+				   WHERE tr.recordId = :requestorId
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.MobileDeviceRegistrationInfo" />
+	<entity class="com.cts.tsp.domain.MobileDeviceTokenRegistrationInfo" />
+	<entity class="com.cts.tsp.domain.ProductType">
+		<named-query name="ProductType.findByName">
+			<query>SELECT p FROM ProductType p
+				   WHERE p.productType = :name
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.RequestResponseLog" />
+	<entity class="com.cts.tsp.domain.ResponseMessageConfig">
+		<named-query name="ResponseMessageConfig.getByCode">
+			<query>SELECT c FROM ResponseMessageConfig c
+				   WHERE c.respMessageCfgName = :code
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenBinRange">
+		<named-query name="TokenBinRange.findByPrefix">
+			<query>SELECT t FROM TokenBinRange t
+			       JOIN FETCH t.fundingBinRange f
+				   WHERE f.fundingBinRange = :fundingPrefix
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenPrefixCounter">
+		<named-query name="TokenPrefixCounter.getCounterByTokenPrefix">
+			<query>SELECT t FROM TokenPrefixCounter t
+			       WHERE t.tokenBin = :tokenPrefix
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenProvisionContent" />
+	<entity class="com.cts.tsp.domain.TokenProvisionRequestQueue">
+		<named-query name="TokenProvisionRequestQueue.getByFPan">
+			<query>SELECT t FROM TokenProvisionRequestQueue t
+			       WHERE  t.fpan = :fpan
+				   
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenProvisionRequestTask" />
+	<entity class="com.cts.tsp.domain.TokenReqestorResponseMessageConfig">
+		<named-query name="TokenReqestorResponseMessageConfig.getMessageByCode">
+			<query>SELECT t FROM TokenReqestorResponseMessageConfig t
+			       JOIN FETCH t.t469RespMessageCfg m
+			       JOIN FETCH t.t460TokenRequestor tr
+				   WHERE  m.respMessageCfgName = :code
+				   AND tr.recordId = :requestorId
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.TokenRequestor" />
+	<entity class="com.cts.tsp.domain.TokenRequestorAttribute" />
+	<entity class="com.cts.tsp.domain.TokenRequestorType" />
+	<entity class="com.cts.tsp.domain.CustomerInfo">
+		<named-query name="CustomerInfo.getByActivationCode">
+			<query>SELECT c
+                   FROM CustomerInfo c
+                   WHERE c.activationCode = :activationCode
+                   AND expiryDate > :expiryDate
+			</query>
+		</named-query>
+	</entity>
+	<entity class="com.cts.tsp.domain.DeviceInfo" />
+
+</entity-mappings>
